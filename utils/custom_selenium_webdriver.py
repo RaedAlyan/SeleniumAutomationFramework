@@ -31,6 +31,29 @@ class CustomSeleniumWebDriver:
         except WebDriverException as e:
             self.logger.error(f'An error occurred while trying to find the WebElement. Error: {e}')
 
+    def get_elements(self, locator: tuple) -> list[WebElement]:
+        """
+        Finds a list of WebElements using the provided locator.
+
+        :param locator: A tuple (By, value) for locating a list of WebElements.
+        :return: A list of WebElement objects.
+        :raises NoSuchElementException: If no elements are found.
+        :raises WebDriverException: If an error occurs while trying to find the WebElements.
+        """
+        self.logger.info(f'********** {self.get_elements.__name__} **********')
+        try:
+            self.logger.info(f'Getting WebElements with this locator: {locator}')
+            web_elements = self.driver.find_elements(*locator)
+            if web_elements:
+                self.logger.info(f'Found {len(web_elements)} WebElements with this locator: {locator}.')
+            else:
+                self.logger.warning(f'No WebElements were found with this locator: {locator}.')
+            return web_elements
+        except NoSuchElementException as e:
+            self.logger.error(f'No WebElements were found with this locator: {locator}. Error: {e}')
+        except WebDriverException as e:
+            self.logger.error(f'An error occurred while trying to find the WebElements. Error: {e}')
+
     def click(self, locator: tuple) -> None:
         """
         Clicks on a WebElement found by the locator.
@@ -92,3 +115,20 @@ class CustomSeleniumWebDriver:
             self.logger.info(f'The screenshot was saved successfully at: {screenshot_path}.')
         except WebDriverException as e:
             self.logger.error(f'An error occurred while trying to save the screenshot. Error: {e}')
+
+    def get_title(self) -> str:
+        """
+        Returns the title of the current browser window.
+
+        :return: the title of the current browser window.
+        :raises WebDriverException: if an error occurs while trying to get the title of the current browser window.
+        """
+        self.logger.info(f'********** {self.get_title.__name__} **********')
+        try:
+            self.logger.info('Fetching the page title...')
+            current_page_title = self.driver.title
+            self.logger.info(f'The page title was fetched successfully. Current page title: {current_page_title}')
+            return current_page_title
+        except WebDriverException as e:
+            self.logger.error(f'An error occurred while trying to get the title of the current browser window. '
+                              f'Error: {e}')
