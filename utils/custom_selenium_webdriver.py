@@ -1,3 +1,5 @@
+import os
+from datetime import datetime
 from selenium.webdriver.remote.webelement import WebElement
 from logger import setup_logger
 from selenium.common.exceptions import NoSuchElementException, WebDriverException, ElementNotInteractableException
@@ -71,3 +73,22 @@ class CustomSeleniumWebDriver:
             self.logger.error(f'The WebElement with this locator isn\'t interactable to be typed. Error: {e}')
         except WebDriverException as e:
             self.logger.error(f'An error occurred while trying to type the text into the WebElement. Error: {e}')
+
+    def take_screenshot(self, screenshot_dir: str = 'screenshots') -> None:
+        """
+        Captures a screenshot of the current browser window.
+
+        :param screenshot_dir: Directory where the screenshot will be saved.
+        :return: None.
+        :raises WebDriverException: if an error occurs while trying to take the screenshot.
+        """
+        self.logger.info(f'********** {self.take_screenshot.__name__} **********')
+        try:
+            os.makedirs(screenshot_dir, exist_ok=True)
+            timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+            screenshot_name = f'{timestamp}.png'
+            screenshot_path = os.path.join(screenshot_dir, screenshot_name)
+            self.driver.save_screenshot(screenshot_path)
+            self.logger.info(f'The screenshot was saved successfully at: {screenshot_path}.')
+        except WebDriverException as e:
+            self.logger.error(f'An error occurred while trying to save the screenshot. Error: {e}')
