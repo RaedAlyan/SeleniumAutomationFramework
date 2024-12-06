@@ -1,6 +1,6 @@
 import pytest
-from ..utils.logger import setup_logger
-from ..utils.config_reader import load_config
+from utils.logger import setup_logger
+from utils.config_reader import load_config
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
@@ -21,7 +21,7 @@ def driver():
     Initializes and yields the WebDriver based on the specified browser in the config file.
     :return:
     """
-    logger.info(f'********** {driver.__name__} **********')
+    logger.info(f'********** {driver.__name__}() **********')
     web_driver = None
     try:
         logger.info('Starting setup stage ...')
@@ -45,7 +45,7 @@ def _get_specified_browser() -> str:
     :raises ValueError: if the browser isn't found.
     :raises Exception: if An error occurred while loading the config.json file.
     """
-    logger.info(f'********** {_get_specified_browser.__name__} **********')
+    logger.info(f'********** {_get_specified_browser.__name__}() **********')
     try:
         logger.info('Loading config file...')
         config = load_config()
@@ -68,7 +68,7 @@ def _initialize_web_driver(browser) -> WebDriver:
     :raises ValueError: if the browser isn't supported.
     :raises Exception: if an error occurred while initializing the webdriver.
     """
-    logger.info(f'********** {_initialize_web_driver.__name__} **********')
+    logger.info(f'********** {_initialize_web_driver.__name__}() **********')
     try:
         if browser == 'chrome':
             return _initialize_chrome_driver()
@@ -92,7 +92,7 @@ def _initialize_chrome_driver() -> WebDriver:
     :return: the initialized chrome webdriver object.
     :raises WebDriverException: if an error occurred while initializing the chrome webdriver.
     """
-    logger.info(f'********** {_initialize_chrome_driver.__name__} **********')
+    logger.info(f'********** {_initialize_chrome_driver.__name__}() **********')
     try:
         logger.info('Initializing Chrome WebDriver...')
         chrome_webdriver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
@@ -109,7 +109,7 @@ def _initialize_firefox_driver():
     :return: the initialized firefox webdriver object.
     :raises WebDriverException: if an error occurred while initializing the firefox webdriver.
     """
-    logger.info(f'********** {_initialize_firefox_driver.__name__} **********')
+    logger.info(f'********** {_initialize_firefox_driver.__name__}() **********')
     try:
         logger.info('Initializing Firefox WebDriver...')
         firefox_webdriver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
@@ -126,7 +126,7 @@ def _initialize_edge_driver():
     :return: the initialized edge webdriver object.
     :raises WebDriverException: if an error occurred while initializing the edge webdriver.
     """
-    logger.info(f'********** {_initialize_edge_driver.__name__} **********')
+    logger.info(f'********** {_initialize_edge_driver.__name__}() **********')
     try:
         logger.info('Initializing Edge WebDriver')
         edge_webdriver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))

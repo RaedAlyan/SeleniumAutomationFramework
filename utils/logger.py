@@ -12,27 +12,30 @@ def setup_logger(log_level=logging.INFO, log_dir='logs'):
     :return: Configured logger instance.
     """
     logger = logging.getLogger()
-    logger.setLevel(log_level)
 
-    os.makedirs(log_dir, exist_ok=True)
+    # to prevent multiple handlers from being added to the logger
+    if not logger.hasHandlers():
+        logger.setLevel(log_level)
 
-    timestamp = datetime.now().strftime('%Y-%m-%d')
-    log_file = os.path.join(log_dir, f'test_log_{timestamp}.log')
+        os.makedirs(log_dir, exist_ok=True)
 
-    # console_handler
-    console_handler = logging.StreamHandler()
-    console_handler.setLevel(log_level)
-    console_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    console_handler.setFormatter(console_formatter)
+        timestamp = datetime.now().strftime('%Y-%m-%d')
+        log_file = os.path.join(log_dir, f'test_log_{timestamp}.log')
 
-    # File Handler
-    file_handler = logging.FileHandler(log_file, mode='a')
-    file_handler.setLevel(log_level)
-    file_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    file_handler.setFormatter(file_formatter)
+        # console_handler
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(log_level)
+        console_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        console_handler.setFormatter(console_formatter)
 
-    # Add Handlers
-    logger.addHandler(console_handler)
-    logger.addHandler(file_handler)
+        # File Handler
+        file_handler = logging.FileHandler(log_file, mode='a')
+        file_handler.setLevel(log_level)
+        file_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        file_handler.setFormatter(file_formatter)
+
+        # Add Handlers
+        logger.addHandler(console_handler)
+        logger.addHandler(file_handler)
 
     return logger
