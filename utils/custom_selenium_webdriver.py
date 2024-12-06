@@ -1,8 +1,11 @@
 import os
 from datetime import datetime
 from selenium.webdriver.remote.webelement import WebElement
-from logger import setup_logger
-from selenium.common.exceptions import NoSuchElementException, WebDriverException, ElementNotInteractableException
+from .logger import setup_logger
+from selenium.common.exceptions import (NoSuchElementException, WebDriverException, ElementNotInteractableException,
+                                        TimeoutException)
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class CustomSeleniumWebDriver:
@@ -20,7 +23,7 @@ class CustomSeleniumWebDriver:
         :raises NoSuchElementException: If the WebElement isn't found.
         :raises WebDriverException: if an error occurs while trying to find the WebElement.
         """
-        self.logger.info(f'********** {self.get_element.__name__} **********')
+        self.logger.info(f'********** {self.get_element.__name__}() **********')
         try:
             self.logger.info(f'Getting WebElement with this locator {locator}')
             web_element = self.driver.find_element(*locator)
@@ -40,7 +43,7 @@ class CustomSeleniumWebDriver:
         :raises NoSuchElementException: If no elements are found.
         :raises WebDriverException: If an error occurs while trying to find the WebElements.
         """
-        self.logger.info(f'********** {self.get_elements.__name__} **********')
+        self.logger.info(f'********** {self.get_elements.__name__}() **********')
         try:
             self.logger.info(f'Getting WebElements with this locator: {locator}')
             web_elements = self.driver.find_elements(*locator)
@@ -54,23 +57,30 @@ class CustomSeleniumWebDriver:
         except WebDriverException as e:
             self.logger.error(f'An error occurred while trying to find the WebElements. Error: {e}')
 
-    def click(self, locator: tuple) -> None:
+    def click(self, locator: tuple, timeout: int = 15) -> None:
         """
         Clicks on a WebElement found by the locator.
 
         :param locator: A tuple (By, value) for locating the WebElement.
+        :param timeout: Maximum time to wait for the WebElement to be clickable (default is 15 seconds).
         :return: None.
         :raises ElementNotInteractableException: If the WebElement isn't interactable to be clicked.
         :raises WebDriverException: if an error occurs while trying to click the WebElement.
         """
-        self.logger.info(f'********** {self.click.__name__} **********')
+        self.logger.info(f'********** {self.click.__name__}() **********')
         try:
+            self.logger.info(f'Waiting for the WebElement to be clickable with locator: {locator}')
+            web_element = WebDriverWait(self.driver, timeout).until(
+                EC.element_to_be_clickable(locator)
+            )
             self.logger.info(f'Clicking the WebElement with this locator: {locator}')
-            web_element = self.get_element(locator)
             web_element.click()
             self.logger.info(f'The WebElement was clicked successfully with this locator: {locator}')
         except ElementNotInteractableException as e:
             self.logger.error(f'The WebElement with this locator {locator} isn\'t interactable to be clicked. '
+                              f'Error: {e}')
+        except TimeoutException as e:
+            self.logger.error(f'Timed out waiting for the WebElement to be clickable with locator: {locator}. '
                               f'Error: {e}')
         except WebDriverException as e:
             self.logger.error(f'An error occurred while trying to click the WebElement. Error: {e}')
@@ -85,7 +95,7 @@ class CustomSeleniumWebDriver:
         :raises ElementNotInteractableException: If the WebElement isn't interactable to be typed.
         :raises WebDriverException: if an error occurs while trying to type the text.
         """
-        self.logger.info(f'********** {self.type_text.__name__} **********')
+        self.logger.info(f'********** {self.type_text.__name__}() **********')
         try:
             self.logger.info(f'Typing text "{text}" into the WebElement with this locator: {locator}')
             web_element = self.get_element(locator)
@@ -105,7 +115,7 @@ class CustomSeleniumWebDriver:
         :return: None.
         :raises WebDriverException: if an error occurs while trying to take the screenshot.
         """
-        self.logger.info(f'********** {self.take_screenshot.__name__} **********')
+        self.logger.info(f'********** {self.take_screenshot.__name__}() **********')
         try:
             os.makedirs(screenshot_dir, exist_ok=True)
             timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -123,7 +133,7 @@ class CustomSeleniumWebDriver:
         :return: the title of the current browser window.
         :raises WebDriverException: if an error occurs while trying to get the title of the current browser window.
         """
-        self.logger.info(f'********** {self.get_title.__name__} **********')
+        self.logger.info(f'********** {self.get_title.__name__}() **********')
         try:
             self.logger.info('Fetching the page title...')
             current_page_title = self.driver.title
@@ -132,3 +142,19 @@ class CustomSeleniumWebDriver:
         except WebDriverException as e:
             self.logger.error(f'An error occurred while trying to get the title of the current browser window. '
                               f'Error: {e}')
+
+    def navigate_to_url(self, url: str) -> None:
+        """
+        Navigates to the specified URL using the WebDriver.
+
+        :param url: the URL to navigate to.
+        :return: None.
+        :raises WebDriverException: if an error occurs while trying to navigate to the URL.
+        """
+        self.logger.info(f'********** {self.navigate_to_url.__name__}() **********')
+        try:
+            self.logger.info(f'Navigating to this url: {url}...')
+            self.driver.get(url)
+            self.logger.info(f'Successfully navigated to this url: {url}')
+        except WebDriverException as e:
+            self.logger.error(f'An error occurred while trying to navigate to this url: {url}. Error: {e}')
