@@ -27,6 +27,7 @@ def driver():
         logger.info('Starting setup stage ...')
         browser = _get_specified_browser()
         web_driver = _initialize_web_driver(browser)
+        web_driver.maximize_window()
         yield web_driver
     except WebDriverException as e:
         logger.error(f'An error occurred while initializing the web driver. Error: {e}')
