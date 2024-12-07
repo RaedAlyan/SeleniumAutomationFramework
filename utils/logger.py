@@ -3,7 +3,7 @@ import logging
 from datetime import datetime
 
 
-def setup_logger(log_level=logging.INFO, log_dir='logs'):
+def setup_logger(log_level=logging.INFO, log_dir='D:\\Projects\\PythonProjects\\selenium_automation_framework\\logs'):
     """
     Sets up a logger with both console and file handlers.
 
