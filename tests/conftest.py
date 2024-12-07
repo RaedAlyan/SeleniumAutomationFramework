@@ -10,7 +10,7 @@ from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.common.exceptions import WebDriverException
-
+from utils.random_data_generator import RandomDataGenerator
 
 logger = setup_logger()
 
@@ -135,3 +135,15 @@ def _initialize_edge_driver():
         return edge_webdriver
     except WebDriverException as e:
         logger.error(f'An error occurred while initializing the edge webdriver. Error: {e}')
+
+
+@pytest.fixture(scope='session')
+def generated_data():
+    faker = RandomDataGenerator()
+    data = {
+        "first_name": faker.generate_random_first_name(),
+        "last_name": faker.generate_random_last_name(),
+        "email": faker.generate_random_email(),
+        "password": faker.generate_random_password(),
+    }
+    return data
