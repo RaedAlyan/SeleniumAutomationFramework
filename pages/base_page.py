@@ -328,3 +328,26 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while selecting a dropdown option by a visible text. Error: {e}')
 
+    def switch_to_iframe(self, locator: tuple) -> None:
+        """
+        Switches the WebDriver's context to the specified IFrame.
+
+        :param locator: the locator strategy and value.
+        :raises Exception: if an error occurs while switching to the IFrame.
+        """
+        try:
+            iframe_element = self.find_element(locator)
+            self.driver.switch_to.frame(iframe_element)
+        except Exception as e:
+            raise Exception(f'An error occurred while switching to a frame. Error: {e}')
+
+    def switch_to_default_content(self) -> None:
+        """
+        Switches the WebDriver's context back to the default content (outside the IFrame).
+
+        :raises Exception: if an error occurs while switching to the default content.
+        """
+        try:
+            self.driver.switch_to.default_content()
+        except Exception as e:
+            raise Exception(f'An error occurred while switching to a default content. Error: {e}')
