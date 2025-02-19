@@ -400,3 +400,41 @@ class BasePage:
             alert.send_keys(text)
         except Exception as e:
             raise Exception(f'An error occurred while sending keys to alert. Error: {e}')
+
+    def get_current_window_handle(self) -> str:
+        """
+        Returns the handle of the current window.
+
+        :return: the handle of the current window.
+        :raises Exception: if an error occurs while getting current window handle.
+        """
+        try:
+            current_window_handle = self.driver.current_window_handle
+            return current_window_handle
+        except Exception as e:
+            raise Exception(f'An error occurred while getting current window handle. Error: {e}')
+
+    def get_all_window_handles(self) -> list:
+        """
+        Returns a list of all window handles.
+
+        :return: a list of all window handles.
+        :raises Exception: if an error occurs while getting all window handles.
+        """
+        try:
+            all_window_handles = self.driver.window_handles
+            return all_window_handles
+        except Exception as e:
+            raise Exception(f'An error occurred while getting all window handles. Error: {e}')
+
+    def switch_to_window(self, handle: str) -> None:
+        """
+        Switches the WebDriver's context to the specified window.
+
+        :param handle: the handle of the window to switch to.
+        :raises Exception: if an error occurs while switching to the window.
+        """
+        try:
+            self.driver.switch_to.window(handle)
+        except Exception as e:
+            raise Exception(f'An error occurred while switching to a window. Error: {e}')
