@@ -351,3 +351,52 @@ class BasePage:
             self.driver.switch_to.default_content()
         except Exception as e:
             raise Exception(f'An error occurred while switching to a default content. Error: {e}')
+
+    def accept_alert(self) -> None:
+        """
+        Accepts an alert (clicks the "OK" button).
+
+        :raises Exception: if an error occurs while accepting an alert.
+        """
+        try:
+            alert = self.driver.switch_to.alert
+            alert.accept()
+        except Exception as e:
+            raise Exception(f'An error occurred while accepting an Alert. Error: {e}')
+
+    def dismiss_alert(self) -> None:
+        """
+        Dismisses an alert (clicks the "Cancel" button).
+
+        :raises Exception: if an error occurs while dismissing an alert.
+        """
+        try:
+            alert = self.driver.switch_to.alert
+            alert.dismiss()
+        except Exception as e:
+            raise Exception(f'An error occurred while dismissing an Alert. Error: {e}')
+
+    def get_alert_text(self) -> str:
+        """
+        Gets the text of an alert.
+
+        :raises Exception: if an error occurs while getting an alert text.
+        """
+        try:
+            alert = self.driver.switch_to.alert
+            return alert.text
+        except Exception as e:
+            raise Exception(f'An error occurred while getting alert text. Error: {e}')
+
+    def send_keys_to_alert(self, text: str) -> None:
+        """
+        Sends text to a prompt alert.
+
+        :param text: the text to send.
+        :raises Exception: if an error occurs while sending text to a prompt alert.
+        """
+        try:
+            alert = self.driver.switch_to.alert
+            alert.send_keys(text)
+        except Exception as e:
+            raise Exception(f'An error occurred while sending keys to alert. Error: {e}')
