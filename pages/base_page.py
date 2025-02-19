@@ -8,6 +8,7 @@ from selenium.common import InvalidArgumentException
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 class BasePage:
@@ -438,3 +439,95 @@ class BasePage:
             self.driver.switch_to.window(handle)
         except Exception as e:
             raise Exception(f'An error occurred while switching to a window. Error: {e}')
+
+    def perform_hover_over_element_action_chain(self, locator: tuple) -> None:
+        """
+        Performs a hover over an element action chain.
+
+        :param locator: the locator strategy and value.
+        :raises Exception: if an error occurs while performing a hover over an element action chain.
+        """
+        try:
+            web_element = self.find_element(locator)
+            ActionChains(self.driver).move_to_element(web_element).perform()
+        except Exception as e:
+            raise Exception(f'An error occurred while performing hover over action chain. Error: {e}')
+
+    def perform_drag_and_drop_action_chain(self, source_locator: tuple, target_locator: tuple) -> None:
+        """
+        Performs a drag and drop action chain.
+
+        :param source_locator: the locator strategy and value for the source element.
+        :param target_locator: the locator strategy and value for the target element.
+        :raises Exception: if an error occurs while performing a drag and drop action chain.
+        """
+        try:
+            source_web_element = self.find_element(source_locator)
+            target_web_element = self.find_element(target_locator)
+            ActionChains(self.driver).drag_and_drop(source_web_element, target_web_element).perform()
+        except Exception as e:
+            raise Exception(f'An error occurred while performing drag and drop action chain. Error: {e}')
+
+    def perform_double_click_action_chain(self, locator: tuple) -> None:
+        """
+        Performs a double click action chain.
+
+        :param locator: the locator strategy and value.
+        :raises Exception: if an error occurs while performing a double click action chain.
+        """
+        try:
+            web_element = self.find_element(locator)
+            ActionChains(self.driver).double_click(web_element).perform()
+        except Exception as e:
+            raise Exception(f'An error occurred while performing double click action chain. Error: {e}')
+
+    def perform_right_click_action_chain(self, locator: tuple) -> None:
+        """
+        Performs a right click (context click) action chain.
+
+        :param locator: the locator strategy and value.
+        :raises Exception: if an error occurs while performing a right click action chain.
+        """
+        try:
+            web_element = self.find_element(locator)
+            ActionChains(self.driver).context_click(web_element).perform()
+        except Exception as e:
+            raise Exception(f'An error occurred while performing right click action. Error: {e}')
+
+    def perform_click_and_hold_action_chain(self, locator: tuple) -> None:
+        """
+        Performs a click and hold action chain.
+
+        :param locator: the locator strategy and value.
+        :raises Exception: if an error occurs while performing a click and hold action chain.
+        """
+        try:
+            web_element = self.find_element(locator)
+            ActionChains(self.driver).click_and_hold(web_element).perform()
+        except Exception as e:
+            raise Exception(f'An error occurred while performing click and hold action chain. Error: {e}')
+
+    def perform_release_action_chain(self, locator: tuple) -> None:
+        """
+        Performs a release action chain.
+
+        :param locator: the locator strategy and value.
+        :raises Exception: if an error occurs while performing a release action chain.
+        """
+        try:
+            web_element = self.find_element(locator)
+            ActionChains(self.driver).release(web_element).perform()
+        except Exception as e:
+            raise Exception(f'An error occurred while performing release action chain. Error: {e}')
+
+    def perform_send_keys_action_chain(self, *keys: str) -> None:
+        """
+        Sends key combinations (e.g., Ctrl+C, Ctrl+V).
+
+        :param keys: the keys to send.
+        :raises Exception: if an error occurs while sending keys.
+        """
+        try:
+            ActionChains(self.driver).send_keys(*keys).perform()
+        except Exception as e:
+            raise Exception(f'An error occurred while sending keys. Error: {e}')
