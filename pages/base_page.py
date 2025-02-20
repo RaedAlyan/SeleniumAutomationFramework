@@ -35,7 +35,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while navigating to the {url}. Error: {e}')
 
-    def find_element(self, locator: tuple, timeout: int = 10) -> WebElement:
+    def find_element(self, locator: tuple[str, str], timeout: int = 10) -> WebElement:
         """
         Finds and returns a single web element.
 
@@ -52,7 +52,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while finding the web element with this locator: {locator}. Error: {e}')
 
-    def find_elements(self, locator: tuple, timeout: int = 10) -> list[WebElement]:
+    def find_elements(self, locator: tuple[str, str], timeout: int = 10) -> list[WebElement]:
         """
         Finds and returns a list of web elements.
 
@@ -127,7 +127,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while getting title of the current page. Error: {e}')
 
-    def click(self, locator: tuple, timeout: int = 10) -> None:
+    def click(self, locator: tuple[str, str], timeout: int = 10) -> None:
         """
         Clicks on a web element.
 
@@ -143,7 +143,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while clicking on the web element with this {locator}. Error: {e}')
 
-    def send_keys(self, locator: tuple, text: str) -> None:
+    def send_keys(self, locator: tuple[str, str], text: str) -> None:
         """
         Enters text into a web element.
 
@@ -180,7 +180,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while closing the current window. Error: {e}')
 
-    def is_dropdown_multiple_selections(self, locator: tuple) -> bool:
+    def is_dropdown_multiple_selections(self, locator: tuple[str, str]) -> bool:
         """
         Checks if the dropdown supports multiple selections.
 
@@ -195,7 +195,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while checking the dropdown supports multiple selections. Error: {e}')
 
-    def select_dropdown_by_visible_text(self, locator: tuple, text: str) -> None:
+    def select_dropdown_by_visible_text(self, locator: tuple[str, str], text: str) -> None:
         """
         Selects a dropdown option by a visible text.
 
@@ -210,7 +210,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while selecting a dropdown option by a visible text. Error: {e}')
 
-    def select_dropdown_by_value(self, locator: tuple, value: str) -> None:
+    def select_dropdown_by_value(self, locator: tuple[str, str], value: str) -> None:
         """
         Selects a dropdown option by its value attribute.
 
@@ -225,7 +225,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while selecting a dropdown option by a value. Error: {e}')
 
-    def select_dropdown_by_index(self, locator: tuple, index: int) -> None:
+    def select_dropdown_by_index(self, locator: tuple[str, str], index: int) -> None:
         """
         Selects a dropdown option by its index.
 
@@ -240,7 +240,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while selecting a dropdown option by an index. Error: {e}')
 
-    def get_all_dropdown_options(self, locator: tuple) -> list:
+    def get_all_dropdown_options(self, locator: tuple[str, str]) -> list:
         """
         Returns all options in a dropdown as a list of strings.
 
@@ -256,7 +256,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while getting all dropdown options. Error: {e}')
 
-    def get_selected_dropdown_option(self, locator: tuple) -> str:
+    def get_selected_dropdown_option(self, locator: tuple[str, str]) -> str:
         """
         Returns the currently selected option in a dropdown.
 
@@ -271,7 +271,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while getting currently selected dropdown option. Error: {e}')
 
-    def deselect_all_dropdown_options(self, locator: tuple) -> None:
+    def deselect_all_dropdown_options(self, locator: tuple[str, str]) -> None:
         """
         Deselects all selected options in a multi-select dropdown.
 
@@ -288,7 +288,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while deselecting all dropdown options. Error: {e}')
 
-    def deselect_dropdown_by_index(self, locator: tuple, index: int) -> None:
+    def deselect_dropdown_by_index(self, locator: tuple[str, str], index: int) -> None:
         """
         Deselects a dropdown option by its index in a multi-select dropdown.
 
@@ -306,7 +306,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while deselecting a dropdown option by an index. Error: {e}')
 
-    def deselect_dropdown_by_value(self, locator: tuple, value: str) -> None:
+    def deselect_dropdown_by_value(self, locator: tuple[str, str], value: str) -> None:
         """
         Deselects a dropdown option by its value attribute in a multi-select dropdown.
 
@@ -324,7 +324,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while deselecting a dropdown option by a value. Error: {e}')
 
-    def deselect_dropdown_by_visible_text(self, locator: tuple, text: str) -> None:
+    def deselect_dropdown_by_visible_text(self, locator: tuple[str, str], text: str) -> None:
         """
         Deselects a dropdown option by its visible text in a multi-select dropdown.
 
@@ -342,7 +342,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while selecting a dropdown option by a visible text. Error: {e}')
 
-    def switch_to_iframe(self, locator: tuple, timeout: int = 10) -> None:
+    def switch_to_iframe(self, locator: tuple[str, str], timeout: int = 10) -> None:
         """
         Switches the WebDriver's context to the specified IFrame.
 
@@ -467,7 +467,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while switching to a window. Error: {e}')
 
-    def perform_hover_over_element_action_chain(self, locator: tuple) -> None:
+    def perform_hover_over_element_action_chain(self, locator: tuple[str, str]) -> None:
         """
         Performs a hover over an element action chain.
 
@@ -480,7 +480,8 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while performing hover over action chain. Error: {e}')
 
-    def perform_drag_and_drop_action_chain(self, source_locator: tuple, target_locator: tuple) -> None:
+    def perform_drag_and_drop_action_chain(self, source_locator: tuple[str, str],
+                                           target_locator: tuple[str, str]) -> None:
         """
         Performs a drag and drop action chain.
 
@@ -495,7 +496,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while performing drag and drop action chain. Error: {e}')
 
-    def perform_double_click_action_chain(self, locator: tuple) -> None:
+    def perform_double_click_action_chain(self, locator: tuple[str, str]) -> None:
         """
         Performs a double click action chain.
 
@@ -508,7 +509,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while performing double click action chain. Error: {e}')
 
-    def perform_right_click_action_chain(self, locator: tuple) -> None:
+    def perform_right_click_action_chain(self, locator: tuple[str, str]) -> None:
         """
         Performs a right click (context click) action chain.
 
@@ -521,7 +522,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while performing right click action. Error: {e}')
 
-    def perform_click_and_hold_action_chain(self, locator: tuple) -> None:
+    def perform_click_and_hold_action_chain(self, locator: tuple[str, str]) -> None:
         """
         Performs a click and hold action chain.
 
@@ -534,7 +535,7 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while performing click and hold action chain. Error: {e}')
 
-    def perform_release_action_chain(self, locator: tuple) -> None:
+    def perform_release_action_chain(self, locator: tuple[str, str]) -> None:
         """
         Performs a release action chain.
 
