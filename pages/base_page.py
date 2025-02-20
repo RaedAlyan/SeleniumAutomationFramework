@@ -9,6 +9,8 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 class BasePage:
@@ -33,29 +35,37 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while navigating to the {url}. Error: {e}')
 
-    def find_element(self, locator: tuple) -> WebElement:
+    def find_element(self, locator: tuple, timeout: int = 10) -> WebElement:
         """
         Finds and returns a single web element.
 
         :param locator: the locator strategy and value.
+        :param timeout: the maximum time to wait for a WebElement to be visible. Defaults to 10 seconds.
         :return: the web element.
         :raises Exception: if an error occurs while finding the element.
         """
         try:
-            return self.driver.find_element(*locator)
+            web_element = WebDriverWait(self.driver, timeout).until(
+                ec.visibility_of_element_located(locator)
+            )
+            return web_element
         except Exception as e:
             raise Exception(f'An error occurred while finding the web element with this locator: {locator}. Error: {e}')
 
-    def find_elements(self, locator: tuple) -> list[WebElement]:
+    def find_elements(self, locator: tuple, timeout: int = 10) -> list[WebElement]:
         """
         Finds and returns a list of web elements.
 
         :param locator: the locator strategy and value.
+        :param timeout: the maximum time to wait for a list of WebElements to be visible. Defaults to 10 seconds.
         :return: a list of web elements.
         :raises Exception: if an error occurs while finding the elements.
         """
         try:
-            return self.driver.find_elements(*locator)
+            web_elements = WebDriverWait(self.driver, timeout).until(
+                ec.visibility_of_all_elements_located(locator)
+            )
+            return web_elements
         except Exception as e:
             raise Exception(
                 f'An error occurred while finding the web_elements with this locator: {locator}. Error: {e}')
@@ -117,15 +127,18 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while getting title of the current page. Error: {e}')
 
-    def click(self, locator: tuple) -> None:
+    def click(self, locator: tuple, timeout: int = 10) -> None:
         """
         Clicks on a web element.
 
         :param locator: the locator strategy and value.
+        :param timeout: the maximum time to wait for a WebElement to be clickable. Defaults to 10 seconds.
         :raises Exception: if an error occurs while clicking on a web element.
         """
         try:
-            web_element = self.find_element(locator)
+            web_element = WebDriverWait(self.driver, timeout).until(
+                ec.element_to_be_clickable(locator)
+            )
             web_element.click()
         except Exception as e:
             raise Exception(f'An error occurred while clicking on the web element with this {locator}. Error: {e}')
@@ -329,16 +342,18 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while selecting a dropdown option by a visible text. Error: {e}')
 
-    def switch_to_iframe(self, locator: tuple) -> None:
+    def switch_to_iframe(self, locator: tuple, timeout: int = 10) -> None:
         """
         Switches the WebDriver's context to the specified IFrame.
 
         :param locator: the locator strategy and value.
+        :param timeout: the maximum time to wait for the IFrame to be available. Defaults to 10 seconds.
         :raises Exception: if an error occurs while switching to the IFrame.
         """
         try:
-            iframe_element = self.find_element(locator)
-            self.driver.switch_to.frame(iframe_element)
+            WebDriverWait(self.driver, timeout).until(
+                ec.frame_to_be_available_and_switch_to_it(locator)
+            )
         except Exception as e:
             raise Exception(f'An error occurred while switching to a frame. Error: {e}')
 
@@ -353,51 +368,63 @@ class BasePage:
         except Exception as e:
             raise Exception(f'An error occurred while switching to a default content. Error: {e}')
 
-    def accept_alert(self) -> None:
+    def accept_alert(self, timeout: int = 10) -> None:
         """
         Accepts an alert (clicks the "OK" button).
 
+        :param timeout: the maximum time to wait for the alert to be present to accept. Defaults to 10 seconds.
         :raises Exception: if an error occurs while accepting an alert.
         """
         try:
-            alert = self.driver.switch_to.alert
+            alert = WebDriverWait(self.driver, timeout).until(
+                ec.alert_is_present()
+            )
             alert.accept()
         except Exception as e:
             raise Exception(f'An error occurred while accepting an Alert. Error: {e}')
 
-    def dismiss_alert(self) -> None:
+    def dismiss_alert(self, timeout: int = 10) -> None:
         """
         Dismisses an alert (clicks the "Cancel" button).
 
+        :param timeout: the maximum time to wait for the alert to be present to dismiss. Defaults to 10 seconds.
         :raises Exception: if an error occurs while dismissing an alert.
         """
         try:
-            alert = self.driver.switch_to.alert
+            alert = WebDriverWait(self.driver, timeout).until(
+                ec.alert_is_present()
+            )
             alert.dismiss()
         except Exception as e:
             raise Exception(f'An error occurred while dismissing an Alert. Error: {e}')
 
-    def get_alert_text(self) -> str:
+    def get_alert_text(self, timeout: int = 10) -> str:
         """
         Gets the text of an alert.
 
+        :param timeout: the maximum time to wait for the alert to be present to get its text. Defaults to 10 seconds.
         :raises Exception: if an error occurs while getting an alert text.
         """
         try:
-            alert = self.driver.switch_to.alert
+            alert = WebDriverWait(self.driver, timeout).until(
+                ec.alert_is_present()
+            )
             return alert.text
         except Exception as e:
             raise Exception(f'An error occurred while getting alert text. Error: {e}')
 
-    def send_keys_to_alert(self, text: str) -> None:
+    def send_keys_to_alert(self, text: str, timeout: int = 10) -> None:
         """
         Sends text to a prompt alert.
 
         :param text: the text to send.
+        :param timeout: the maximum time to wait for the alert to be present to send keys to it. Defaults to 10 seconds.
         :raises Exception: if an error occurs while sending text to a prompt alert.
         """
         try:
-            alert = self.driver.switch_to.alert
+            alert = WebDriverWait(self.driver, timeout).until(
+                ec.alert_is_present()
+            )
             alert.send_keys(text)
         except Exception as e:
             raise Exception(f'An error occurred while sending keys to alert. Error: {e}')
