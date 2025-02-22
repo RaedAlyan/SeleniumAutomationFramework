@@ -4,7 +4,6 @@
 @date: 02/17/2025.
 @contact: raedeleyan1@gmail.com
 """
-from selenium.common import InvalidArgumentException
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select
@@ -14,7 +13,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import (WebDriverException, TimeoutException, NoSuchElementException,
                                         ElementNotVisibleException, ElementNotInteractableException,
                                         UnexpectedTagNameException, ElementClickInterceptedException,
-                                        NoSuchFrameException, NoAlertPresentException, NoSuchWindowException)
+                                        NoSuchFrameException, NoAlertPresentException, NoSuchWindowException,
+                                        InvalidArgumentException)
 
 
 class BasePage:
@@ -291,10 +291,13 @@ class BasePage:
 
         :param locator: the locator strategy and value.
         :param index: the index of the option to select.
+        :raises ValueError: when the index is negative.
         :raises UnexpectedTagNameException: when the Select class didn't get an expected WebElement.
         :raises WebDriverException: when an error occurs while trying to select a dropdown option by an index.
         """
         try:
+            if index < 0:
+                raise ValueError('Index must be a non-negative integer.')
             web_element = self.find_element(locator)
             drop_down = Select(web_element)
             drop_down.select_by_index(index)
