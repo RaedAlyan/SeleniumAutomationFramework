@@ -1,4 +1,5 @@
 """
+This Module Encapsulates Common Web Interaction and Operations.
 
 @author: Raed Eleyan.
 @date: 02/17/2025.
