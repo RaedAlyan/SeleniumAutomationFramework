@@ -14,6 +14,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from config_loader import ConfigLoader
+from selenium.common.exceptions import WebDriverException
 
 
 class WebDriverInitializer:
@@ -30,8 +31,8 @@ class WebDriverInitializer:
         Initializes and returns a WebDriver instance for the specified browser.
 
         :return: an instance of the WebDriver for the specified browser.
-        :raises KeyError: If the specified browser is not supported.
-        :raises Exception: if an error occurred while initializing the WebDriver.
+        :raises KeyError: when the specified browser is not supported.
+        :raises WebDriverException: when an error occurred while trying to initialize the WebDriver.
         """
         try:
             if self.browser == 'chrome':
@@ -43,6 +44,6 @@ class WebDriverInitializer:
             else:
                 raise KeyError(f'The browser {self.browser} is not supported.')
             return web_driver
-        except Exception as e:
-            raise Exception(f'An error occurred while initializing the WebDriver. The error: {e}')
+        except WebDriverException as e:
+            raise WebDriverException(f'An error occurred while trying to initialize the WebDriver. Error: {e}')
 
