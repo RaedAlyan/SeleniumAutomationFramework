@@ -60,3 +60,13 @@ class Logger:
     def critical(self, message):
         """Log a critical message."""
         self.logger.critical(message)
+
+    def log_method_entry(self, method_name: str, width: int = 50) -> None:
+        """
+        Logs the entry into the current method with the method name centered.
+
+        :param method_name: The name of the method to be logged.
+        :param width: The width of the logged message.
+        """
+        centered_name = method_name.center(width, '*')
+        self.logger.debug(centered_name)
