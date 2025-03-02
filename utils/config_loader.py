@@ -6,6 +6,7 @@ This module provides a lightweight class for loading configurations from the con
 @contact: raedeleyan1@gmail.com.
 """
 import json
+from logger import Logger
 
 
 class ConfigLoader:
@@ -18,6 +19,7 @@ class ConfigLoader:
         """
         self.config_path = config_path
         self.config = self._load_config_file()
+        self.logger = Logger()
 
     def _load_config_file(self) -> dict:
         """
@@ -26,10 +28,15 @@ class ConfigLoader:
         :return: the configuration data.
         :raise FileNotFoundError: if the configuration file is not found.
         """
+        self.logger.log_method_entry(self._load_config_file.__name__)
         try:
+            self.logger.info(f'Loading configuration file from {self.config_path}')
             with open(self.config_path) as config_file:
-                return json.load(config_file)
+                config_data = json.load(config_file)
+                self.logger.info(f'The configuration file has been loaded from {self.config_path} successfully.')
+                return config_data
         except FileNotFoundError:
+            self.logger.error('The configuration file wasn\'t found.')
             raise FileNotFoundError(f'The configuration file {self.config_path} was not found.')
 
     def get_specified_browser(self) -> str:
@@ -38,8 +45,13 @@ class ConfigLoader:
 
         :return: the name of the specified browser.
         """
+        self.logger.log_method_entry(self.get_specified_browser.__name__)
         try:
+            self.logger.info(f'Retrieving the specified browser from the configuration file')
             specified_browser = self.config['browser']
+            self.logger.info(f'The specified browser which is : {specified_browser} has been retrieved from '
+                             f'{self.config_path} successfully.')
             return specified_browser
-        except KeyError:
-            raise KeyError('The "browser" key is missing in the configuration file.')
+        except KeyError as e:
+            self.logger.error('No "browser" key in the configuration file.')
+            raise KeyError(f'The "browser" key is missing in the configuration file. Error: {e}')
