@@ -9,6 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.service import Service as ChromiumService
+from selenium.webdriver.chrome.service import Service as BraveService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.edge.service import Service as EdgeService
 from webdriver_manager.chrome import ChromeDriverManager
@@ -46,6 +47,9 @@ class WebDriverInitializer:
             elif self.browser == 'chromium':
                 web_driver = webdriver.Chrome(service=ChromiumService(ChromeDriverManager(
                     chrome_type=ChromeType.CHROMIUM).install()))
+            elif self.browser == 'brave':
+                web_driver = webdriver.Chrome(service=BraveService(ChromeDriverManager(
+                    chrome_type=ChromeType.BRAVE).install()))
             else:
                 raise KeyError(f'The browser {self.browser} is not supported.')
             return web_driver
