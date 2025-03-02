@@ -8,11 +8,13 @@ This module provides a class to initialize and manage WebDriver instances for di
 from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.service import Service as ChromiumService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.edge.service import Service as EdgeService
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
+from webdriver_manager.core.os_manager import ChromeType
 from config_loader import ConfigLoader
 from selenium.common.exceptions import WebDriverException
 
@@ -41,6 +43,9 @@ class WebDriverInitializer:
                 web_driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
             elif self.browser == 'edge':
                 web_driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
+            elif self.browser == 'chromium':
+                web_driver = webdriver.Chrome(service=ChromiumService(ChromeDriverManager(
+                    chrome_type=ChromeType.CHROMIUM).install()))
             else:
                 raise KeyError(f'The browser {self.browser} is not supported.')
             return web_driver
