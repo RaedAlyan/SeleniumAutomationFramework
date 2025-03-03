@@ -35,15 +35,16 @@ class ConfigLoader:
                 config_data = json.load(config_file)
                 self.logger.info(f'The configuration file has been loaded from {self.config_path} successfully.')
                 return config_data
-        except FileNotFoundError:
+        except FileNotFoundError as e:
             self.logger.error('The configuration file wasn\'t found.')
-            raise FileNotFoundError(f'The configuration file {self.config_path} was not found.')
+            raise FileNotFoundError(f'The configuration file {self.config_path} was not found. Error: {e}')
 
     def get_specified_browser(self) -> str:
         """
         Retrieves the specified browser from the configuration file.
 
         :return: the name of the specified browser.
+        :raises KeyError: If the 'browser' key is missing in the config file.
         """
         self.logger.log_method_entry(self.get_specified_browser.__name__)
         try:
@@ -55,3 +56,21 @@ class ConfigLoader:
         except KeyError as e:
             self.logger.error('No "browser" key in the configuration file.')
             raise KeyError(f'The "browser" key is missing in the configuration file. Error: {e}')
+
+    def get_browser_options(self) -> dict:
+        """
+        Retrieves the browser options from the configuration file.
+
+        :return: A dictionary of browser options (e.g., {"chrome": ["--headless", "--disable-gpu"]}).
+        :raises KeyError: If the 'browser_options' key is missing in the config file.
+        """
+        self.logger.log_method_entry(self.get_browser_options.__name__)
+        try:
+            self.logger.info(f'Retrieving the browser options from the configuration file')
+            browser_options = self.config['browser_options']
+            self.logger.info('Successfully retrieved the browser options from the configuration file. '
+                             f'The browser options are : {browser_options}')
+            return browser_options
+        except KeyError as e:
+            self.logger.error('No "browser_options" key in the configuration file.')
+            raise KeyError(f'The "browser_options" key is missing in the configuration file. Error: {e}')
