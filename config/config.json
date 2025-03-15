@@ -1,0 +1,6 @@
+{
+  "browser_configurations": {
+    "browser": "chrome",
+    "headless": false
+  }
+}
